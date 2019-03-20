@@ -1,11 +1,22 @@
 # Changelog
 
+## v1.2.1
+
+* Fix invalid typespec that was causing compiler warnings on Elixir 1.8. (Thanks [asummers](https://github.com/asummers), [pull/34](https://github.com/tompave/fun_with_flags/pull/34))
+
+## v1.2.0
+
+* Redis persistence: upgrade to Redix 0.9, which deprecates Redix.PubSub. The pubsub capabilities are now part of the base Redix package. This means that FunWithFlags also needs to drop the dependency on Redix.PubSub.
+* Compatibility updates in the tests for Elixir 1.8.
+
+There is no other change in this release, but this is a minor version bump because upgrading Redix and dropping Redix.PubSub will require applications to also update their dependencies.
+
 ## v1.1.0
 
 * Drop support for Elixir 1.5. Elixir >= 1.6 is now required.
 * Drop support for OTP 19. OTP >= 20 is now required.
 * Update to Ecto 3 with the `ecto_sql` package.
-* Update to Redix 0.8 and Redis.PubSub 0.5.
+* Update to Redix 0.8 and Redix.PubSub 0.5.
 * Ecto persistence: add `NOT NULL` constraints to the table definition in the Ecto migration. This is not a breaking change: the constraints have been added because those values are never null anyway. If users of the library want to add them, they can do so by adding [this migration](https://github.com/tompave/fun_with_flags/blob/master/priv/ecto_repo/migrations/00000000000001_ensure_columns_are_not_null.exs) to their projects.
 * Redis persistence: allow to configure the Redis URL with a system tuple to read it from an environment variable. (Thanks [seangeo](https://github.com/seangeo), [pull/29](https://github.com/tompave/fun_with_flags/pull/29))
 

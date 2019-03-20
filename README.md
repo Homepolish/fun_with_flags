@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/tompave/fun_with_flags.svg?branch=master)](https://travis-ci.org/tompave/fun_with_flags)
 [![Hex.pm](https://img.shields.io/hexpm/v/fun_with_flags.svg)](https://hex.pm/packages/fun_with_flags)
-[![hexdocs.pm](https://img.shields.io/badge/docs-1.1.0-brightgreen.svg)](https://hexdocs.pm/fun_with_flags/)
+[![hexdocs.pm](https://img.shields.io/badge/docs-1.2.1-brightgreen.svg)](https://hexdocs.pm/fun_with_flags/)
 [![ElixirWeekly](https://img.shields.io/badge/featured-ElixirWeekly-8e5ab5.svg)](https://elixirweekly.net/issues/43)
 
 FunWithFlags, the Elixir feature flag library.
@@ -464,7 +464,7 @@ Often the solution is to memoize the flag values _in the context of the web requ
 
 Of course, caching adds a different kind of complexity and there are some pros and cons. When a flag is created or updated the ETS cache on the local node is updated immediately, and the main problem is syncronizing the flag data across the other application nodes that should share the same view of the world.
 
-For example, of we have two or more nodes running the application, and on one of them an admin user updates a flag that the others have already cached, or creates a flag that the others have already looked up (and cached as "disabled"), then the other nodes must  be notified of the changes.
+For example, if we have two or more nodes running the application, and on one of them an admin user updates a flag that the others have already cached, or creates a flag that the others have already looked up (and cached as "disabled"), then the other nodes must  be notified of the changes.
 
 FunWithFlags uses three mechanisms to deal with the problem:
 
@@ -551,7 +551,7 @@ It's also necessary to create the DB table that will hold the feature flag data.
 
 ### PubSub Adapters
 
-The library comes with two PubSub adapters for the [`Redix.PubSub`](https://hex.pm/packages/redix_pubsub) and [`Phoenix.PubSub`](https://hex.pm/packages/phoenix_pubsub) libraries. In order to use any of them, you must declare the correct optional dependency in the Mixfile. (see the [installation](#installation) instructions, below)
+The library comes with two PubSub adapters for the [`Redix`](https://hex.pm/packages/redix) and [`Phoenix.PubSub`](https://hex.pm/packages/phoenix_pubsub) libraries. In order to use any of them, you must declare the correct optional dependency in the Mixfile. (see the [installation](#installation) instructions, below)
 
 The Redis PubSub adapter is the default and doesn't need to be excplicity configured. It can only be used in conjunction with the Redis persistence adapter however, and is not available when using Ecto for persistence. When used, it connects directly to the Redis instance used for persisting the the flag data.
 
@@ -594,17 +594,15 @@ In order to have a small installation footprint, the dependencies for the differ
 ```elixir
 def deps do
   [
-    {:fun_with_flags, "~> 1.1.0"},
+    {:fun_with_flags, "~> 1.2.1"},
 
     # either:
-    {:redix, "~> 0.8"},
+    {:redix, "~> 0.9"},
     # or:
     {:ecto_sql, "~> 3.0}",
 
-    # either:
-    {:redix_pubsub, "~> 0.5"}, # depends on :redix
-    # or:
-    {:phoenix_pubsub, "~> 1.0"},
+    # optionally, if you don't want to use Redis' builtin pubsub
+    {:phoenix_pubsub, "~> 1.1"},
   ]
 end
 ```
